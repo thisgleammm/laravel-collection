@@ -16,4 +16,12 @@ class CollectionTest extends TestCase
         $collection = collect([1, 2, 3]);
         $this->assertEqualsCanonicalizing([1, 2, 3], $collection->all());
     }
+
+    public function testForEach(): void
+    {
+        $collection = collect([1, 2, 3]);
+        foreach ($collection as $item => $value) {
+            $this->assertEqualsCanonicalizing($item + 1, $value);
+        }
+    }
 }
