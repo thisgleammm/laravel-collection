@@ -125,4 +125,40 @@ class CollectionTest extends TestCase
             "country" => "Indonesia"
         ], $collection3->all());
     }
+
+    public function testCollapse()
+    {
+        $collection1 = collect([
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]);
+        $result = $collection1->collapse();
+
+        $this->assertEqualsCanonicalizing([
+            1, 2, 3, 4, 5, 6, 7, 8, 9
+        ], $result->all());
+    }
+
+    public function testFlatMap()
+    {
+        $collection = collect([
+            [
+                "name" => "Gleam",
+                "country" => ["Indonesia", "Singapore"]
+            ],
+            [
+                "name" => "Bahli",
+                "country" => ["Indonesia", "Prindapan"]
+            ]
+        ]);
+        $result = $collection->flatMap(function ($item) {
+            $country = $item["country"];
+            return $country;
+        });
+
+        $this->assertEqualsCanonicalizing([
+            "Indonesia", "Singapore", "Indonesia", "Prindapan"
+        ], $result->all());
+    }
 }
