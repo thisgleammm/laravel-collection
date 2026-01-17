@@ -228,4 +228,34 @@ class CollectionTest extends TestCase
             return $value === "Bahli";
         }));
     }
+    public function testGrouping() 
+    {
+        $collection = collect([
+            ["name" => "Gleam", "role" => "IT"],
+            ["name" => "Bahli", "role" => "Anomali"]
+        ]);
+        $result = $collection->groupBy("role");
+
+        $this->assertEquals([
+            "IT" => collect([
+                ["name" => "Gleam", "role" => "IT"]
+            ]),
+            "Anomali" => collect([
+                ["name" => "Bahli", "role" => "Anomali"]
+            ])
+        ], $result->all());
+
+        $result = $collection->groupBy(function ($value) {
+            return $value["role"];
+        });
+
+        $this->assertEquals([
+            "IT" => collect([
+                ["name" => "Gleam", "role" => "IT"]
+            ]),
+            "Anomali" => collect([
+                ["name" => "Bahli", "role" => "Anomali"]
+            ])
+        ], $result->all());
+    }
 }
