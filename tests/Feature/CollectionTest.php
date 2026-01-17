@@ -161,4 +161,13 @@ class CollectionTest extends TestCase
             "Indonesia", "Singapore", "Indonesia", "Prindapan"
         ], $result->all());
     }
+
+    public function testStringRepresentation()
+    {
+        $collection = collect(["Gleam", "Bahli"]);
+        $result = $collection->join("-");
+
+        $this->assertEquals("Gleam-Bahli", $result);
+        $this->assertEquals("Gleam_Bahli", $collection->join("_"));
+    }
 }
