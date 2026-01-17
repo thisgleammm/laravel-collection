@@ -170,4 +170,32 @@ class CollectionTest extends TestCase
         $this->assertEquals("Gleam-Bahli", $result);
         $this->assertEquals("Gleam_Bahli", $collection->join("_"));
     }
+
+    public function testFilter()
+    {
+        $collection = collect([
+            "Gleam" => 100,
+            "Bahli" => 90,
+            "Anomali" => 80
+        ]);
+        $result = $collection->filter(function ($score) {
+            return $score >= 90;
+        });
+
+        $this->assertEquals([
+            "Gleam" => 100,
+            "Bahli" => 90,
+        ], $result->all());
+    }
+    public function testFilterIndex()
+    {
+        $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        $result = $collection->filter(function ($value, $key) {
+            return $value % 2 == 0;
+        });
+
+        $this->assertEqualsCanonicalizing([
+            2, 4, 6, 8, 10
+        ], $result->all());
+    }
 }
