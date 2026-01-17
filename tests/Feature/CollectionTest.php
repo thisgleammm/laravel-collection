@@ -198,4 +198,23 @@ class CollectionTest extends TestCase
             2, 4, 6, 8, 10
         ], $result->all());
     }
+    public function testPartition()
+    {
+        $collection = collect([
+            "Gleam" => 100,
+            "Bahli" => 90,
+            "Anomali" => 80
+        ]);
+        [$result, $result2] = $collection->partition(function ($value) {
+            return $value >= 90;
+        });
+
+        $this->assertEquals([
+            "Gleam" => 100,
+            "Bahli" => 90,
+        ], $result->all());
+        $this->assertEquals([
+            "Anomali" => 80,
+        ], $result2->all());
+    }
 }
