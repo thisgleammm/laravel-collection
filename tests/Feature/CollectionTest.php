@@ -6,6 +6,7 @@ use App\Data\Person;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertEqualsCanonicalizing;
 
 class CollectionTest extends TestCase
@@ -408,5 +409,15 @@ class CollectionTest extends TestCase
         self::assertEquals(1, $result);
         $result = $collection->max();
         self::assertEquals(10, $result);
+    }
+
+    public function testReduce()
+    {
+        $collection = collect([1,2,3,4,5,6,7,8,9]);
+        $result = $collection->reduce(function ($carry, $item){
+            return $carry + $item;
+        });
+
+        assertEquals(45, $result);
     }
 }
