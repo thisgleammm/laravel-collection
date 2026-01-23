@@ -6,6 +6,7 @@ use App\Data\Person;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use function PHPUnit\Framework\assertEqualsCanonicalizing;
 
 class CollectionTest extends TestCase
 {
@@ -273,5 +274,45 @@ class CollectionTest extends TestCase
         $this->assertEqualsCanonicalizing([
             4, 5
         ], $result->all());
+    }
+
+    public function testTake()
+    {
+        $collection = collect([1,2,3,4,5,6,7,8,9]);
+        $result = $collection->take(3);
+
+        assertEqualsCanonicalizing([1,2,3], $result->all());
+
+        $result = $collection->takeUntil(function ($value, $key){
+            return $value == 3;
+        });
+
+        assertEqualsCanonicalizing([1,2], $result->all());
+
+        $result = $collection->takeWhile(function ($value, $key){
+            return $value < 3;
+        });
+
+        assertEqualsCanonicalizing([1,2], $result->all());
+    }
+
+    public function testSkip()
+    {
+        $collection = collect([1,2,3,4,5,6,7,8,9]);
+        $result = $collection->skip(3);
+
+        assertEqualsCanonicalizing([4,5,6,7,8,9], $result->all());
+
+        $result = $collection->skipUntil(function ($value, $key){
+            return $value == 3;
+        });
+
+        assertEqualsCanonicalizing([3,4,5,6,7,8,9], $result->all());
+
+        $result = $collection->skipWhile(function ($value, $key){
+            return $value < 3;
+        });
+
+        assertEqualsCanonicalizing([3,4,5,6,7,8,9], $result->all());
     }
 }
