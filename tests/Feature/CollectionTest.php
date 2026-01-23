@@ -396,4 +396,17 @@ class CollectionTest extends TestCase
 
         assertEqualsCanonicalizing([10,9,8,7,6,5,4,3,2,1], $result->all());
     }
+
+    public function testAggregate()
+    {
+        $collection = collect([1,2,3,4,5,6,7,8,9,10]);
+        $result = $collection->sum();
+        self::assertEquals(55, $result);
+        $result = $collection->avg();
+        self::assertEquals(5.5, $result);
+        $result = $collection->min();
+        self::assertEquals(1, $result);
+        $result = $collection->max();
+        self::assertEquals(10, $result);
+    }
 }
